@@ -4,3 +4,4 @@
 /build/classes/java/main/
 /node_modules/
 #/src/main/java/com/example/demo/config/secret/
+/src/main/resources/application.yml

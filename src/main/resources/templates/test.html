@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Spring Boot Ajax 예</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!--    <link rel="stylesheet" type="text/css"-->
+<!--          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />-->
+</head>
+<body>
+
+
+<div class="container" style="min-height: 500px">
+
+    <div class="starter-template">
+        <h1>Spring Boot AJAX 예</h1>
+
+        <div id="feedback"></div>
+
+        <form class="form-horizontal" id="product-search-form">
+            <div class="form-group form-group-lg">
+                <label class="col-sm-2 control-label">Input Product Id</label>
+                <div class="col-sm-10">
+<!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="number" class="form-control" id="productId" placeholder="productId"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" id="bth-search"
+                            class="btn btn-primary btn-lg">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <form class="form-horizontal" id="product-create-form">
+            <div class="form-group form-group-lg">
+                <label class="col-sm-2 control-label">Input Product Id</label>
+                <div class="col-sm-10">
+                    <!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="text" class="form-control" id="product-title" placeholder="title"/>
+                </div>
+                <div class="col-sm-10">
+                    <!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="text" class="form-control" id="product-content" placeholder="content"/>
+                </div>
+                <div class="col-sm-10">
+                    <!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="number" class="form-control" id="product-price" placeholder="price"/>
+                </div>
+                <div class="col-sm-10">
+                    <!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="number" class="form-control" id="product-userId" placeholder="userId"/>
+                </div>
+                <div class="col-sm-10">
+                    <!--                    <input type="text" class="form-control" id="username" />-->
+                    <input type="number" class="form-control" id="product-categoryId" placeholder="categoryId"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" id="product-bth-create"
+                            class="btn btn-primary btn-lg">Create</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+<!--<div class="container">-->
+<!--    <footer>-->
+<!--        <p>-->
+<!--            © <a href="https://woolbro.tistory.com">Woolbro.com</a> 2019-->
+<!--        </p>-->
+<!--    </footer>-->
+<!--</div>-->
+
+<!--<script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>-->
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#product-search-form").submit(function (event) {
+
+            event.preventDefault();
+
+            getProduct();
+
+        });
+
+        $("#product-create-form").submit(function (event) {
+            event.preventDefault();
+
+            createProduct();
+        })
+
+    });
+
+    function createProduct() {
+
+        var createProduct = {}
+        createProduct["title"] = $("#product-title").val();
+        createProduct["content"] = $("#product-content").val();
+        createProduct["price"] = $("#product-price").val();
+        createProduct["userId"] = $("#product-userId").val();
+        createProduct["categoryId"] = $("#product-categoryId").val();
+        // var productId = $("#productId").val();
+        //search["email"] = $("#email").val();
+
+        $("#product-bth-create").prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            // url: "/api/search",
+            url: "/product",
+            data: JSON.stringify(createProduct),
+            // data: productId,
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + JSON.stringify(data,null,4) + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("SUCCESS : ", data);
+                $("#product-bth-create").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("ERROR : ", e);
+                $("#product-bth-create").prop("disabled", false);
+
+            }
+        });
+
+    }
+
+    function getProduct() {
+
+        var productId = $("#productId").val();
+        //search["email"] = $("#email").val();
+
+        $("#btn-search").prop("disabled", true);
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            // url: "/api/search",
+            url: "/product/" + productId,
+            // data: JSON.stringify(search),
+            // data: productId,
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + JSON.stringify(data,null,4) + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("SUCCESS : ", data);
+                $("#btn-search").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("ERROR : ", e);
+                $("#btn-search").prop("disabled", false);
+
+            }
+        });
+
+    }
+</script>
+
+</body>
+</html>

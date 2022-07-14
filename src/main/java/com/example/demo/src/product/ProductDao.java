@@ -29,16 +29,22 @@ public class ProductDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetProductRes> getProducts() {
+    public List<GetProductRes> getProducts(int page, int amount) {
 
         String getProductsQuery =
                 "select product.productId, location.city, user.phoneNum, user.profileImgUrl, user.userName, product.title, product.content, product.price, category.category " +
                 "from product " +
                 "left join user on user.userId = product.userId " +
                 "left join category on category.categoryId = product.categoryId " +
-                "left join location on user.userId = location.userId";
+                "left join location on user.userId = location.userId " +
+                "limit 3 offset ?";
 
-        String getProductImgQuery = "select productImg.productImgId, productImg.productImgUrl from productImg left join product on productImg.productId =0";
+//        int limitValue = amount;
+        int offsetValueParams = page * amount;
+//        int[] pageParams = new int[]{ limitValue, offsetValue };
+
+//        int limitParams = amount;
+        String getProductImgQuery = "select productImg.productImgId, productImg.productImgUrl from productImg left join product on productImg.productId =product.productId where product.productId = 0";
         List<GetProductImgRes> getProductImgRes = this.jdbcTemplate.query(getProductImgQuery,
                 (rs, rowNum) -> new GetProductImgRes(
                         rs.getInt("productImgId"),
@@ -62,8 +68,9 @@ public class ProductDao {
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("price"),
-                        rs.getString("category"))
-        );
+                        rs.getString("category")),
+                offsetValueParams);
+//        );
 
     }
 

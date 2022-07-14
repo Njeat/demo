@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +37,10 @@ public class ProductController {
 
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetProductRes>> getProducts(){
+    public BaseResponse<List<GetProductRes>> getProducts(@RequestParam int page){
+        System.out.println(page);
         try{
-            List<GetProductRes> getProductRes = productProvider.getProducts();
+            List<GetProductRes> getProductRes = productProvider.getProducts(page, 3);
             return new BaseResponse<>(GET_ALL_PRODUCT_SUCCESS,getProductRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

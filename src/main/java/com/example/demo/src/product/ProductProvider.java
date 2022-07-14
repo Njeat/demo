@@ -21,9 +21,11 @@ public class ProductProvider {
         this.productDao = productDao;
     }
 
-    public List<GetProductRes> getProducts() throws  BaseException{
+    public List<GetProductRes> getProducts(int page, int amount) throws BaseException{
+        System.out.println("page, amount : " + page + " " + amount);
+
         try{
-            List<GetProductRes> getProductRes = productDao.getProducts();
+            List<GetProductRes> getProductRes = productDao.getProducts(page, amount);
             return getProductRes;
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);

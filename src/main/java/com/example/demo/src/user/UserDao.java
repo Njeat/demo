@@ -110,14 +110,14 @@ public class UserDao {
 //
 //    }
     public User getUserId(PostLoginReq postLoginReq){
-        String getUserIdQuery = "select userId, phoneNum, userName, profileImgUrl, manner, status from User where phoneNum = ?";
+        String getUserIdQuery = "select userId, userName, phoneNum, profileImgUrl, manner, status, createdAt, updatedAt from User where phoneNum = ?";
         String getUserIdParams = postLoginReq.getPhoneNum();
 
         return this.jdbcTemplate.queryForObject(getUserIdQuery,
                 (rs, rowNum)-> new User(
                         rs.getInt("userId"),
-                        rs.getString("ipAddress"),
-                        rs.getString("city"),
+//                        rs.getString("ipAddress"),
+//                        rs.getString("city"),
                         rs.getString("userName"),
                         rs.getString("phoneNum"),
                         rs.getString("profileImgUrl"),

@@ -14,11 +14,14 @@ public enum BaseResponseStatus {
 
     // [POST] /users
     SIGNUP_SUCCESS(true,1000,"회원가입 성공"),
+    SIGNIN_SUCCESS(true,1000,"로그인 성공"),
 
     // [GET] /users
     GET_ALL_USER_SUCCESS(true,1000,"모든 유저 조회 성공"),
     GET_USER_SUCCESS(true,1000,"유저 조회 성공"),
 
+    // [PATH] /users
+    MODIFY_SUCCESS(true, 1000, "변경 성공"),
     // [POST] /product
     POST_PRODUCT_SUCCESS(true,1000,"상품 등록 성공"),
 

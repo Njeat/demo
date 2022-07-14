@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User {
     private int userId;
-    private String ipAddress;
-    private String city;
+//    private String ipAddress;
+//    private String city;
     private String userName;
     private String phoneNum;
     private String profileImgUrl;

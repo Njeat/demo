@@ -1,5 +1,6 @@
 package com.example.demo.src.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -8,6 +9,7 @@ import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -125,11 +127,13 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+
         try{
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
             // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            logger.info("ㅍㅗㄴ넘버: " + postLoginReq.getPhoneNum());
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
-            return new BaseResponse<>(postLoginRes);
+            return new BaseResponse<>(SIGNIN_SUCCESS,postLoginRes);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
@@ -143,9 +147,11 @@ public class UserController {
     @ResponseBody
     @PatchMapping("/{userId}")
     public BaseResponse<String> modifyUserName(@PathVariable("userId") int userId, @RequestBody User user){
+        logger.info("qkrxowns::: " + user.getUserName());
         try {
             //jwt에서 idx 추출.
             int userIdByJwt = jwtService.getUserId();
+            System.out.println("result : " + userIdByJwt);
             //userId와 접근한 유저가 같은지 확인
             if(userId != userIdByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
@@ -155,10 +161,17 @@ public class UserController {
             userService.modifyUserName(patchUserReq);
 
             String result = "";
-        return new BaseResponse<>(result);
+        return new BaseResponse<>(MODIFY_SUCCESS,result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
+    }
+
+    @GetMapping("/test/get")
+    public String testUser() throws BaseException {
+        int userIdByJwt = jwtService.getUserId();
+        System.out.println("qkrxowns::::" + userIdByJwt);
+        return "hello";
     }
 
 

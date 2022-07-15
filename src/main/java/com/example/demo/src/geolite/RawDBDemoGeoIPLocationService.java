@@ -15,7 +15,7 @@ public class RawDBDemoGeoIPLocationService {
     private DatabaseReader dbReader;
 
     public RawDBDemoGeoIPLocationService() throws IOException {
-        File database = new File("/Users/parktj/IdeaProjects/api-server-pratice/src/main/resources/maxmind/GeoLite2-City.mmdb");
+        File database = new File("./src/main/resources/maxmind/GeoLite2-City.mmdb");
         dbReader = new DatabaseReader.Builder(database).build();
     }
 

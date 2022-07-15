@@ -20,7 +20,7 @@ public class CategoryDao {
     }
 
     public List<GetCategoryRes> getCategories(){
-        String getCategoriesQuery = "select * from Category";
+        String getCategoriesQuery = "select * from category";
         return this.jdbcTemplate.query(getCategoriesQuery,
                 (rs,rowNum) -> new GetCategoryRes(
                         rs.getString("categoryImgUrl"),
@@ -29,7 +29,7 @@ public class CategoryDao {
     }
 
     public GetCategoryRes getCategory(int categoryId){
-        String getCategoryQuery = "select * from Category where categoryId=?";
+        String getCategoryQuery = "select * from category where categoryId=?";
         int getCategoryParams = categoryId;
         return this.jdbcTemplate.queryForObject(getCategoryQuery,
                 (rs, rowNum) -> new GetCategoryRes(

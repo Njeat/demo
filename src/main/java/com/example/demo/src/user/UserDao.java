@@ -20,7 +20,7 @@ public class UserDao {
     }
 
     public List<GetUserRes> getUsers(){
-        String getUsersQuery = "select user.userId, location.city, user.userName, user.phoneNum, user.profileImgUrl, user.manner, user.createdAt, user.updatedAt from User left join location on user.userId = location.userId";
+        String getUsersQuery = "select user.userId, location.city, user.userName, user.phoneNum, user.profileImgUrl, user.manner, user.createdAt, user.updatedAt from user left join location on user.userId = location.userId";
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs,rowNum) -> new GetUserRes(
                         rs.getInt("userId"),
@@ -35,7 +35,7 @@ public class UserDao {
     }
 
     public List<GetUserRes> getUsersByEmail(String phoneNum){
-        String getUsersByPhoneNumQuery = "select * from User where phoneNum =?";
+        String getUsersByPhoneNumQuery = "select * from user where phoneNum =?";
         String getUsersByPhoneNumParams = phoneNum;
         return this.jdbcTemplate.query(getUsersByPhoneNumQuery,
                 (rs, rowNum) -> new GetUserRes(
@@ -51,7 +51,7 @@ public class UserDao {
     }
 
     public GetUserRes getUser(int userId){
-        String getUserQuery = "select user.userId, location.city, user.userName, user.phoneNum, user.profileImgUrl, user.manner, user.createdAt, user.updatedAt from User left join location on user.userId = location.userId where user.userId = ?";
+        String getUserQuery = "select user.userId, location.city, user.userName, user.phoneNum, user.profileImgUrl, user.manner, user.createdAt, user.updatedAt from user left join location on user.userId = location.userId where user.userId = ?";
         int getUserParams = userId;
         return this.jdbcTemplate.queryForObject(getUserQuery,
                 (rs, rowNum) -> new GetUserRes(
@@ -69,7 +69,7 @@ public class UserDao {
 
     public int createUser(PostUserReq postUserReq){
         String createUserQuery =
-                "insert into User (userName, profileImgUrl, phoneNum) VALUES (?,?,?)";
+                "insert into user (userName, profileImgUrl, phoneNum) VALUES (?,?,?)";
         Object[] createUserParams = new Object[]{postUserReq.getUserName(), postUserReq.getProfileImgUrl(), postUserReq.getPhoneNum()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
@@ -87,7 +87,7 @@ public class UserDao {
     }
 
     public int modifyUserName(PatchUserReq patchUserReq){
-        String modifyUserNameQuery = "update User set userName = ? where userId = ? ";
+        String modifyUserNameQuery = "update user set userName = ? where userId = ? ";
         Object[] modifyUserNameParams = new Object[]{patchUserReq.getUserName(), patchUserReq.getUserId()};
 
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
@@ -110,7 +110,7 @@ public class UserDao {
 //
 //    }
     public User getUserId(PostLoginReq postLoginReq){
-        String getUserIdQuery = "select userId, userName, phoneNum, profileImgUrl, manner, status, createdAt, updatedAt from User where phoneNum = ?";
+        String getUserIdQuery = "select userId, userName, phoneNum, profileImgUrl, manner, status, createdAt, updatedAt from user where phoneNum = ?";
         String getUserIdParams = postLoginReq.getPhoneNum();
 
         return this.jdbcTemplate.queryForObject(getUserIdQuery,
